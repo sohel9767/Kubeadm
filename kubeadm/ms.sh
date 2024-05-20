@@ -28,7 +28,7 @@ sudo sysctl --system
 
 # Add Kubernetes repository
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
 
 # Install kubeadm, kubelet, and kubectl
@@ -38,8 +38,8 @@ sudo apt-mark hold kubelet kubeadm kubectl
 # Initialize Kubernetes cluster
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 
-# Set up kubeconfig for the root user
-sudo mkdir -p $HOME/.kube
+# Set up kubeconfig for the regular user
+mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
